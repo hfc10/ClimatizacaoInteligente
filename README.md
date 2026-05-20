@@ -18,7 +18,7 @@ pip install scikit-fuzzy numpy matplotlib
 ### 2. Execucao
 Com as bibliotecas instaladas, basta executar o arquivo principal pelo terminal:
 `bash
-python controlador.py
+python controlador_fuzzy_p.py
 `
 
 ---
