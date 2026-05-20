@@ -1,6 +1,6 @@
 # 🌡️ Controlador Fuzzy P - Sistema de Climatização Inteligente
 
-Este projeto implementa um **Controlador Fuzzy Tipo P em Python** para ajustar de forma inteligente e gradual a potência de um sistema de climatização *(ar condicionado/aquecedor)* com base no erro de temperatura do ambiente.
+Este projeto implementa um **Controlador Fuzzy em Python** para ajustar de forma inteligente a potência de um sistema de climatização *(resfriamento ou aquecimento)* com base no **erro térmico** entre a temperatura atual do ambiente e a temperatura alvo *(setpoint)*.
 
 ---
 
@@ -8,17 +8,9 @@ Este projeto implementa um **Controlador Fuzzy Tipo P em Python** para ajustar d
 
 ## 1. Pré-requisitos
 
-Certifique-se de ter o **Python 3** instalado no seu computador.
+Certifique-se de possuir o **Python 3** instalado.
 
-Você precisará instalar as bibliotecas:
-
-- `scikit-fuzzy`
-- `numpy`
-- `matplotlib`
-- `networkx`
-- `scipy`
-
-Instale as dependências executando o comando abaixo no terminal:
+Instale as dependências necessárias:
 
 ```bash
 pip install scikit-fuzzy numpy matplotlib networkx scipy
@@ -28,7 +20,7 @@ pip install scikit-fuzzy numpy matplotlib networkx scipy
 
 ## 2. Execução
 
-Com as bibliotecas instaladas, execute o arquivo principal pelo terminal:
+Após instalar as bibliotecas, execute o arquivo principal:
 
 ```bash
 python controlador_fuzzy_p.py
@@ -36,24 +28,25 @@ python controlador_fuzzy_p.py
 
 ---
 
-# 📥 Valores de Entrada (O que digitar?)
+# 📥 Entradas do Sistema
 
-O programa é interativo via linha de comando e solicitará duas entradas:
+O programa funciona via linha de comando e solicitará duas entradas.
 
-## 1. Modo de Operação (Menu Inicial)
+## 1. Modo de Operação
 
-- Digite **`1`** para o modo **Frio**  
-  *(Configura automaticamente o Setpoint para 18 °C)*
+Selecione o modo desejado:
 
-- Digite **`2`** para o modo **Normal**  
-  *(Configura automaticamente o Setpoint para 25 °C)*
+| Opção | Modo | Setpoint |
+|---|---|---:|
+| `1` | Frio | 18 °C |
+| `2` | Normal | 25 °C |
+| `3` | Quente | 32 °C |
 
-- Digite **`3`** para o modo **Quente**  
-  *(Configura automaticamente o Setpoint para 32 °C)*
+O modo escolhido define automaticamente a **temperatura alvo (setpoint)**.
 
-## 2. Temperatura Atual (°C)
+## 2. Temperatura Atual
 
-Digite a temperatura medida atualmente no ambiente.
+Digite a temperatura atual do ambiente.
 
 Aceita números inteiros ou decimais.
 
@@ -67,17 +60,25 @@ Aceita números inteiros ou decimais.
 
 ---
 
-# ⚙️ Como o Sistema Funciona
+# ⚙️ Funcionamento do Sistema Fuzzy
 
-### 1. Cálculo do Erro
-O sistema calcula a diferença:
+O controlador segue as etapas abaixo:
+
+## 1. Cálculo do Erro Térmico
+
+O sistema calcula:
 
 ```text
 Erro = Temperatura Atual - Setpoint
 ```
 
-### 2. Fuzzificação
-O erro é classificado em categorias lógicas:
+Esse erro representa a diferença entre a temperatura do ambiente e a temperatura desejada.
+
+---
+
+## 2. Fuzzificação
+
+O erro térmico é convertido em conjuntos fuzzy por meio das seguintes categorias:
 
 - Muito Negativo
 - Pouco Negativo
@@ -85,15 +86,48 @@ O erro é classificado em categorias lógicas:
 - Pouco Positivo
 - Muito Positivo
 
-### 3. Regras Fuzzy
-O motor processa as regras de controle.
+---
 
-- Se o erro estiver próximo de zero, a potência reduz.
-- Se o erro for muito alto *(positivo ou negativo)*, a potência aumenta.
+## 3. Variável de Saída
 
-### 4. Defuzzificação
-O sistema converte os conjuntos lógicos em um valor exato de:
+A saída do sistema é a **Potência Aplicada (%)**, dividida em:
 
-**Potência de Saída (0% a 100%)**
+- Desligado
+- Baixa
+- Média
+- Alta
 
-Esse valor é exibido ao final da execução.
+---
+
+## 4. Regras Fuzzy
+
+O motor de inferência utiliza as seguintes regras:
+
+| Erro | Potência |
+|---|---|
+| Muito Negativo | Alta |
+| Pouco Negativo | Média |
+| Zero | Desligado |
+| Pouco Positivo | Média |
+| Muito Positivo | Alta |
+
+---
+
+## 5. Inferência e Defuzzificação
+
+Após aplicar as regras fuzzy, o sistema realiza a **defuzzificação** para converter os conjuntos fuzzy em um valor numérico de **potência aplicada (0% a 100%)**.
+
+O resultado é exibido no terminal junto com:
+
+- Modo de operação
+- Temperatura atual
+- Setpoint
+- Erro calculado
+- Potência aplicada
+- Status do sistema
+
+---
+
+## 📊 Visualização Gráfica
+
+Ao final da execução, o programa gera um **gráfico da potência de saída fuzzy**, permitindo visualizar o comportamento do controlador e o resultado da inferência.
