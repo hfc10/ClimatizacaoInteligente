@@ -11,7 +11,7 @@ Certifique-se de ter o Python 3 instalado no seu computador. Voce precisara inst
 
 Instale as dependencias executando o comando abaixo no seu terminal:
 ```bash
-pip install scikit-fuzzy numpy matplotlib
+pip install scikit-fuzzy numpy matplotlib networkx scipy
 
 ---
 
